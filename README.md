@@ -7,8 +7,10 @@ Usage
 Add the following lines to import:
 
 `import sys`
+
 `from bocado import classes`
-`from bocaod import value_sampler`
+
+`from bocado import value_sampler`
 
 Then begin sampling with:
 
