@@ -1,4 +1,4 @@
-from disturils.core import setup
+from distutils.core import setup
 
 setup(
     name = "bocado",
@@ -6,7 +6,7 @@ setup(
     author = "Emma Tosch",
     author_email = "etosch@cs.umass.edu",
     packages = ["bocado"],
-    package_dir={"src/bocado"}
+    package_dir={"": "src"},
     package_data = {"": ["schemata/*", "protos/*"]},
-    licence = "Apache 2.0"
+    license = "Apache 2.0",
 )
