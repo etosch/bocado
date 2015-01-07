@@ -178,7 +178,7 @@ class FunctionRefTest(unittest.TestCase):
     squarearg = ArgRef(fn, "n")
     self.assertEqual(fn.arity(), 1)
 
-  def test_signaturenature(self):
+  def test_signature(self):
     import types
     fn = FunctionRef("", -1, "map")
     arg1 = ArgRef(fn, "fn")
@@ -187,7 +187,7 @@ class FunctionRefTest(unittest.TestCase):
     arg1.add_sample(lambda x: x*x)
     arg2.add_sample([1,2,3])
     retval.add_sample([1,4,9])
-    fn.set_signaturenature()
+    fn.set_signature()
     self.assertEqual(fn.signature[""], (-1, ParameterizedList([int])))
     self.assertEqual(fn.signature["fn"], (0, types.FunctionType))
     self.assertEqual(fn.signature["coll"], (1, ParameterizedList([int])))
