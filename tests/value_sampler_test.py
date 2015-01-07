@@ -76,7 +76,7 @@ def get_fn(name):
   for filedict in FunctionRef.all_fns.values():
     for fn in filedict.values():
       if fn.funcname == name:
-        fn.set_signaturenature()
+        fn.set_signature()
         return fn
 
 
