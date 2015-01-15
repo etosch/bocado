@@ -26,8 +26,9 @@ def reset_reservoirsize(n):
 def _add_to_samples(f_code, items):
   """Adds observed values for f_code to samples."""
   fn = classes.FunctionRef(f_code.co_filename,
-                   f_code.co_firstlineno,
-                   f_code.co_name)
+                           f_code.co_firstlineno,
+                           f_code.co_name,
+                           f_code.co_code)
   for k, v in items:
     arg = classes.ArgRef(fn, k)
     arg.add_sample(v)

@@ -170,7 +170,7 @@ class FunctionRef(object):
     retval._init = True
     return retval
 
-  def __init__(self, filename, lineno, funcname, method=False):
+  def __init__(self, filename, lineno, funcname, funcbody, method=False):
     if (filename in FunctionRef.all_fns
         and lineno in FunctionRef.all_fns[filename]):
       if funcname != self.funcname:
@@ -178,6 +178,11 @@ class FunctionRef(object):
             "Cannot have two functions in the same file (%s) with the "
             "same line number (%d), but different names (%s vs. %s)." %
             (filename, lineno, funcname, self.funcname))
+      elif hash(funcbody) != self._funcbodyhash:
+        raise Exception (
+          "Attempting to overwrite function %s in file %s at line %d" %
+          (funcname, filename, lineno)
+        )
       return
     if not self._init:
       return
@@ -189,6 +194,7 @@ class FunctionRef(object):
     # string of argname |-> tuple of position * type
     self.signature = {}
     self.key = self.__hash__()
+    self._funcbodyhash = hash(funcbody)
     FunctionRef.all_fns[filename][lineno] = self
     self._init = False
 
