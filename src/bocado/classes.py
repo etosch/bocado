@@ -12,7 +12,6 @@
 
 """Classes used by the sampler."""
 
-import sys
 import types
 
 

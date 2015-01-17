@@ -269,7 +269,7 @@ class TaggedUnionTest(unittest.TestCase):
 
   def test_init(self):
     union = TaggedUnion([int, bool])
-    self.assertEqual(union.tags, [int, bool])
+    self.assertEqual(sorted(union.tags), sorted([int, bool]))
     self.assertIs(union, TaggedUnion([int, bool]))
     # Nested unions are pulled to the top.
     nestedunion = TaggedUnion([TaggedUnion([int, bool]), bool])
