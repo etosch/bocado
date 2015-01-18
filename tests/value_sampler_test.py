@@ -9,8 +9,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import sys
-import types
+
 import unittest
 
 from bocado.classes import *
@@ -90,12 +89,12 @@ class ValueSamplerTest(unittest.TestCase):
   def test_lambdas(self):
     # Begin tracing.
     sys.settrace(self.trace_fn)
-    foo, bar = lambda x: x, lambda y: y
+    foo, bar = lambda x: x, lambda y: y*y
     result0 = foo(bar(1))
     result1 = lambda_in_body(args=123)
     result2 = apply_lambda_immediately(args=321)
-    with self.assertRaises(Exception) as e:
-      lambda_in_kwd_args()
+    #with self.assertRaises(Exception) as e:
+    lambda_in_kwd_args()
     # End tracing.
     sys.settrace(None)
     self.assertEqual(foo.__name__, '<lambda>')

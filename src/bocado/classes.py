@@ -161,11 +161,11 @@ class FunctionRef(object):
 
   all_fns = ValueCollectionDict(dict)
 
-  def __new__(cls, filename, lineno, funcname, method=False):
+  def __new__(cls, filename, lineno, funcname, funcbody, method=False):
     if (filename in FunctionRef.all_fns
         and lineno in FunctionRef.all_fns[filename]):
       return FunctionRef.all_fns[filename][lineno]
-    retval = super(FunctionRef, cls).__new__(cls, filename, lineno, funcname, method=False)
+    retval = super(FunctionRef, cls).__new__(cls, filename, lineno, funcname, funcbody, method=False)
     retval._init = True
     return retval
 

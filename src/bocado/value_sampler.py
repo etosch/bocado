@@ -14,8 +14,8 @@
 import classes
 
 absorb = lambda x, y, z: None
-active = set([])
-inactive = set([])
+active = set()
+inactive = set()
 reservoirsize = 100
 numsamples = 100
 
@@ -73,6 +73,12 @@ def _trace_return(frame, event, arg):
       return _trace_exception
     # Otherwise, we are a return event.
     _add_to_samples(frame.f_code, [("", arg)])
+  return _trace_line
+
+
+def _trace_line(frame, event, arg):
+  for k in dir(frame):
+    print k, getattr(frame, k)
 
 
 def get_fn_arg_values(frame, event, arg, skipself=True):

@@ -83,7 +83,7 @@ class ValueCollectionDictTest(unittest.TestCase):
 class ArgRefTest(unittest.TestCase):
 
   def setUp(self):
-    self.fn = FunctionRef("foo", 1, "fooFn")
+    self.fn = FunctionRef("foo", 1, "fooFn", "")
 
   def add_sample(self):
     arg0 = ArgRef(self.fn, "arg0")
@@ -130,8 +130,8 @@ class ArgRefTest(unittest.TestCase):
 class FunctionRefTest(unittest.TestCase):
 
   def test_init(self):
-    fn1 = FunctionRef("foo", 1, "fooFn")
-    fn2 = FunctionRef("foo", 1, "fooFn")
+    fn1 = FunctionRef("foo", 1, "fooFn", "")
+    fn2 = FunctionRef("foo", 1, "fooFn", "")
     self.assertEqual(fn1, fn2)
     self.assertIs(fn1, fn2)
     with self.assertRaises(Exception) as e:
@@ -145,7 +145,7 @@ class FunctionRefTest(unittest.TestCase):
     self.assertNotEqual(co1, co3)
 
   def test_get_num_samples(self):
-    fn = FunctionRef("bar", 1, "barFn")
+    fn = FunctionRef("bar", 1, "barFn", "")
     arg1 = ArgRef(fn, "arg1")
     retval = ArgRef(fn, "")
     # Pretend we observed an input, but an exception was thrown.
@@ -160,7 +160,7 @@ class FunctionRefTest(unittest.TestCase):
     self.assertEqual(fn.get_num_samples(), 2)
 
   def test_get_return(self):
-    fn = FunctionRef("baz", 1, "bazFn")
+    fn = FunctionRef("baz", 1, "bazFn", "")
     argref, returntype = fn.get_return()
     self.assertIsNone(argref)
     self.assertEqual(returntype, types.NoneType)
@@ -174,13 +174,13 @@ class FunctionRefTest(unittest.TestCase):
     # e.g., def square(n):
     #         return n * n
     # arity(square) = 1
-    fn = FunctionRef("", 1, "square")
+    fn = FunctionRef("", 1, "square", "")
     squarearg = ArgRef(fn, "n")
     self.assertEqual(fn.arity(), 1)
 
   def test_signature(self):
     import types
-    fn = FunctionRef("", -1, "map")
+    fn = FunctionRef("", -1, "map", "")
     arg1 = ArgRef(fn, "fn")
     arg2 = ArgRef(fn, "coll")
     retval = ArgRef(fn, "")
