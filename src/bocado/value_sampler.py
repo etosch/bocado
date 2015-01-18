@@ -25,6 +25,9 @@ def reset_reservoirsize(n):
 
 def _add_to_samples(f_code, items):
   """Adds observed values for f_code to samples."""
+  # Punt on anonymous functions for now.
+  if f_code.co_name == "<lambda>":
+      return
   fn = classes.FunctionRef(f_code.co_filename,
                            f_code.co_firstlineno,
                            f_code.co_name,
@@ -38,7 +41,7 @@ def _add_to_samples(f_code, items):
 def _stop_sampling(fn):
   # Will want something more clever than this, based on having high confidence
   # in the observed values. We probably want to model this as a DP.
-  return all([len(arg.samples) > numsamples for arg in fn.args.values()])
+  return fn and all([len(arg.samples) > numsamples for arg in fn.args.values()])
 
 
 def _inject_listener(frame, fn):
@@ -59,8 +62,8 @@ def _trace_call(frame, event, arg):
     except KeyError:
       pass
   # _trace_call's return function is called on every subsequent event in scope.
-  return lambda x, y, z: _trace_return(x, y, z) and _trace_line(x, y, z)
-
+  # return lambda x, y, z: _trace_line(x, y, z) and _trace_return(x, y, z)
+  return _trace_return
 
 def _trace_exception(frame, event, arg):
   return None
@@ -74,9 +77,14 @@ def _trace_return(frame, event, arg):
     # Otherwise, we are a return event.
     _add_to_samples(frame.f_code, [("", arg)])
 
+
 def _trace_line(frame, event, arg):
-  for k in dir(frame):
-    print k, getattr(frame, k)
+  import dis
+  print frame.f_locals
+  for k in dir(frame.f_code):
+    if not k.startswith("__"):
+      print k, getattr(frame.f_code, k)
+  print dis.dis(frame.f_code)
 
 
 def get_fn_arg_values(frame, event, arg, skipself=True):

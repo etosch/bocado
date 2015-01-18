@@ -170,7 +170,8 @@ class FunctionRef(object):
     return retval
 
   def __init__(self, filename, lineno, funcname, funcbody, method=False):
-    if (filename in FunctionRef.all_fns
+    if (filename != "<stdin>" # every prompt of the REPL is line 1.
+        and filename in FunctionRef.all_fns
         and lineno in FunctionRef.all_fns[filename]):
       if funcname != self.funcname:
         raise Exception(
