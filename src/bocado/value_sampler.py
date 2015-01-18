@@ -59,7 +59,7 @@ def _trace_call(frame, event, arg):
     except KeyError:
       pass
   # _trace_call's return function is called on every subsequent event in scope.
-  return _trace_return
+  return lambda x, y, z: _trace_return(x, y, z) and _trace_line(x, y, z)
 
 
 def _trace_exception(frame, event, arg):
@@ -73,8 +73,6 @@ def _trace_return(frame, event, arg):
       return _trace_exception
     # Otherwise, we are a return event.
     _add_to_samples(frame.f_code, [("", arg)])
-  return _trace_line
-
 
 def _trace_line(frame, event, arg):
   for k in dir(frame):
