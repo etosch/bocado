@@ -129,6 +129,9 @@ class ArgRefTest(unittest.TestCase):
 
 class FunctionRefTest(unittest.TestCase):
 
+  def tearDown(self):
+    FunctionRef.all_fns = ValueCollectionDict(dict)
+
   def test_init(self):
     fn1 = FunctionRef("foo", 1, "fooFn", "")
     fn2 = FunctionRef("foo", 1, "fooFn", "")
@@ -191,6 +194,16 @@ class FunctionRefTest(unittest.TestCase):
     self.assertEqual(fn.signature[""], (-1, ParameterizedList([int])))
     self.assertEqual(fn.signature["fn"], (0, types.FunctionType))
     self.assertEqual(fn.signature["coll"], (1, ParameterizedList([int])))
+
+  def test_filesource(self):
+    import re
+    self.assertFalse(re.match(FunctionRef.special_regex, "asdf"))
+    self.assertTrue(re.match(FunctionRef.special_regex, "<asdf>"))
+    fn = FunctionRef("", -1, "foo", "")
+    with self.assertRaises(Exception) as e:
+      FunctionRef("", -1, "bar", "")
+    FunctionRef("<string>", -1, "foo", "")
+    FunctionRef("<string>", -1, "bar", "")
 
 
 class ParametricTypeTest(unittest.TestCase):

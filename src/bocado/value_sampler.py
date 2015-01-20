@@ -12,6 +12,7 @@
 
 """Defines the top-level tracing function."""
 import classes
+import re
 
 absorb = lambda x, y, z: None
 active = set()
@@ -27,7 +28,7 @@ def _add_to_samples(f_code, items):
   """Adds observed values for f_code to samples."""
   # Punt on anonymous functions for now.
   if f_code.co_name == "<lambda>":
-      return
+    return
   fn = classes.FunctionRef(f_code.co_filename,
                            f_code.co_firstlineno,
                            f_code.co_name,

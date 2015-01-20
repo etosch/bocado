@@ -12,6 +12,7 @@
 
 """Classes used by the sampler."""
 
+import re
 import types
 
 
@@ -160,6 +161,7 @@ class FunctionRef(object):
   """Container for Function information."""
 
   all_fns = ValueCollectionDict(dict)
+  special_regex = "^<.*>$"
 
   def __new__(cls, filename, lineno, funcname, funcbody, method=False):
     if (filename in FunctionRef.all_fns
@@ -170,7 +172,7 @@ class FunctionRef(object):
     return retval
 
   def __init__(self, filename, lineno, funcname, funcbody, method=False):
-    if (filename != "<stdin>" # every prompt of the REPL is line 1.
+    if (not re.match(FunctionRef.special_regex, filename) #FunctionRef.is_special_file(filename)
         and filename in FunctionRef.all_fns
         and lineno in FunctionRef.all_fns[filename]):
       if funcname != self.funcname:
@@ -429,7 +431,7 @@ class ParameterizedDict(ParametricType):
       return
     self.keytags = keytags
     self.valuetags = valuetags
-    self.__name__ = to_string(self, "Dict", set(keytags, valuetags))
+    self.__name__ = self.to_string(self, "Dict", set(keytags, valuetags))
 
   def __repr__(self):
     return "%s@%d" % (self.__name__, id(self))
